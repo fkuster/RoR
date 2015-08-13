@@ -1,0 +1,28 @@
+
+  <%= render "layouts/header", title:"all subreddits",disabled:true%>
+  <div class="well border">
+    <% @all_subreddits.each do |subreddit| %>
+
+        <div class="row">
+
+          <div class="col-md-1">
+            <div class="vote">
+          <%= subreddit.posts.sum(:upvotes_count) %>
+            </div>
+          </div>
+          <div class="col-md-11">
+            <div class="title">
+            <%= link_to subreddit.name ,subreddit_path(id: subreddit.id) %>
+            </div>
+            
+            <%== "submitted <strong>#{time_ago_in_words(subreddit.created_at)}</strong> ago by <span class='red'>#{subreddit.user.nickname}</span> " %>
+
+            <br>
+            <br>
+
+          </div>
+        </div>
+      <hr>
+    <% end %>
+  </div>
+  <%= will_paginate @all_subreddits %>

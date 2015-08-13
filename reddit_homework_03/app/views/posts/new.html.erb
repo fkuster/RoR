@@ -1,0 +1,12 @@
+<%= render "layouts/header", title: "frontpage",disabled:true%>
+
+<div class="row well border">
+
+  <div class="col-md-6">
+      <%= simple_form_for @post,:url => subreddit_posts_path  do |f| %>
+        <%= f.input :title %>
+        <%= f.input :content %>
+        <%= f.button :submit %>
+      <% end %>
+  </div>
+</div>

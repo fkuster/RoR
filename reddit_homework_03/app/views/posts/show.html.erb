@@ -1,0 +1,64 @@
+<%= render "layouts/header", title: @subreddit.name,subreddit_id:@subreddit.id,disabled:true%>
+
+
+<div class="row well border borderr col-md-8">
+
+  <div class="post">
+
+      <div id="post<%=@post.id%>" class="col-lg-2">
+        <div class="vote">  <%= @post.upvotes.count %></div>
+
+
+
+        <div class="voteButton">
+        <%= link_to "Upvote",new_subreddit_post_upvote_path(subreddit_id:@subreddit.id,post_id:@post.id),remote:true,:class=>"btn bred" %>
+        </div>
+      </div>
+
+
+    <div class="col-md-10">
+      <div class="title">  <%= @post.title %></div>
+
+
+      <%== "submitted <strong>#{time_ago_in_words(@post.created_at)}</strong> ago by <span class='red'>#{@post.user.nickname}</span> in " %>
+      <span class="red">  <%= link_to @post.subreddit.name,subreddit_path(id: @post.subreddit.id) %></span>
+      <br>
+      <br>
+      <%= link_to "Edit post", edit_subreddit_post_path(subreddit_id:@subreddit.id,id:@post.id), :class => "btn btn-default", :method => :get %>
+      <%= link_to "Delete post", subreddit_post_path(id:@post.id), :class => "btn btn-danger", :method => :delete  %>
+      <br>
+      <br>
+        <%= @post.content %>
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col-md-10 col-md-push-2">
+      <%==  @post.comments.count==1?"<strong>#{@post.comments.count} comment</strong>  - leave your mark" : "<strong>#{@post.comments.count} comments</strong> - leave your mark" %>
+      <%= render 'comment_form' %>
+      <br>
+      <br>
+    </div>
+  </div>
+
+  <div class="row">
+
+        <% if @post.comments.any? %>
+            <% @post.comments.sorted_desc.each do |comment| %>
+            <hr>
+            <div class="row">
+                <div class="col-md-10 col-md-push-2">
+                <%== "commented by <span class='red'>#{comment.user.nickname}</span> - <strong>#{time_ago_in_words(comment.created_at)}</strong> ago" %>
+                <div class="content">
+                  <%= comment.content %>
+                </div>
+
+            </div>
+            <% end %>
+        <% else %>
+            <%= "No comments yet" %>
+        <% end %>
+   </div>
+  </div>
+
+</div>
